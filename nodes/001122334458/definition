@@ -15,7 +15,7 @@ actions:
     attributes:
       url: files/templates/cvxsystem.template
       variables:
-        hostname: veos-dc1-pod1-tor1
+        hostname: veos-dc1-pod1-tor2
         ztpserver: 172.16.130.10
     name: "configure global system"
     onstart: "Starting to add basic system config"
@@ -64,4 +64,4 @@ actions:
 attributes:
   variables:
     ztpserver: 172.16.130.10
-name: tor1
+name: tor2

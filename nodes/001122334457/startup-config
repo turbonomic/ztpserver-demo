@@ -1,5 +1,5 @@
-! Startup-config last modified at  Thu Jul 17 09:20:01 2014 by all
-! device: veos-dc1-pod1-spine2 (vEOS, EOS-4.13.5F)
+! Startup-config last modified at  Thu Jul 17 09:20:00 2014 by all
+! device: veos-dc1-pod1-spine1 (vEOS, EOS-4.13.5F)
 !
 ! boot system flash:/4.13.5F.swi
 !
@@ -15,7 +15,7 @@ lldp timer 5
 !
 logging host 172.16.130.10
 !
-hostname veos-dc1-pod1-spine2
+hostname veos-dc1-pod1-tor1
 ip name-server vrf default 172.16.130.10
 ip domain-name ztps-test.com
 !
@@ -33,38 +33,36 @@ username admin privilege 15 role network-admin secret 5 $1$mwkIWhpb$xRmHyEEva3CP
 vlan 2
    name production
 !
-vlan 100
+vlan 10
 !
 interface Ethernet1
-   description veos-dc1-pod1-tor1-bgp:10.1.2.1
+   description veos-dc1-pod1-spine1-bgp:10.1.1.0
    switchport mode trunk
    no switchport
-   ip address 10.1.2.0/31
+   ip address 10.1.1.1/31
 !
 interface Ethernet2
-   description veos-dc1-pod1-tor2-bgp:10.1.2.3
+   description veos-dc1-pod1-spine2-bgp:10.1.2.0
    switchport mode trunk
    no switchport
-   ip address 10.1.2.2/31
+   ip address 10.1.2.1/31
 !
 interface Ethernet3
-   description veos-dc1-pod1-spine1-bgp:10.1.3.0
+   description veos-dc1-pod1-tor2-bgp:10.1.3.3
    switchport mode trunk
    no switchport
-   ip address 10.1.3.1/31
+   ip address 10.1.3.2/31
 !
 interface Ethernet4
 !
 interface Loopback0
-   ip address 1.1.1.2/32
+   ip address 1.1.1.3/32
 !
 interface Loopback1
-   ip address 2.2.2.2/32
+   ip address 2.2.2.3/32
 !
 interface Management1
-   ip address 172.16.130.21/24
-!
-ip virtual-router mac-address 00:1c:73:00:00:99
+   ip address 172.16.130.22/24
 !
 ip access-list open
    10 permit ip any any
@@ -82,8 +80,8 @@ router bgp 65001
    neighbor ztpleaf peer-group
    neighbor ztpleaf remote-as 65002
    neighbor ztpleaf maximum-routes 12000 
-   neighbor 10.1.2.1 peer-group ztpleaf
-   neighbor 10.1.2.3 peer-group ztpleaf
+   neighbor 10.1.1.1 peer-group ztpleaf
+   neighbor 10.1.1.3 peer-group ztpleaf
    redistribute connected
 !
 management cvx
@@ -93,9 +91,9 @@ management cvx
 management xmpp
    no shutdown
    server im.ztps-test.com
-   username veos-dc1-pod1-spine2@im.ztps-test.com password 7 070A2E5F5E050C16
+   username veos-dc1-pod1-tor1@im.ztps-test.com password 7 070A2E5F5E050C16
    switch-group all@conference.im.ztps-test.com
-   switch-group spine@conference.im.ztps-test.com
+   switch-group tor@conference.im.ztps-test.com
    domain im.ztps-test.com
 !
 !
